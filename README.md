@@ -50,3 +50,33 @@ alembic revision --autogenerate -m "message"
 ```bash
 alembic upgrade head
 ```
+
+## Controller and API Version Control
+
+所有 `controllers` 底下的資料夾都會被自動地掃描並且註冊成 API 路由。
+
+API 將透過 `controllers` 底下的資料夾進行版本控制，每個資料夾代表一個版本的 API。
+
+### 新增 API 版本
+
+* 新增一個資料夾，並且命名為 `v{version}`，例如 `v1`
+* 在 main.py 中調整以下程式
+    ```python
+    ## auto require all controller
+    versions = ['v1', 'v2', 'v{version}']
+    ```
+* 在新的 `v{version}` 資料夾中開始新增新的 Controller
+
+### 路由規則
+
+所有 Controller 底下 `v{version}` 的路由都會以 `/api/{version}` 開頭。舉個例子：
+* 置於 `{project_root}/controllers/v2/IndexController.py` 的以下路由
+
+    ```python
+    @defi.route('/', methods=['GET'])
+    def index_page():
+        return jsonify(status=200, msg={
+            "message": "Server is running, This is version 2 API."
+    })
+    ```
+    將會被註冊成 `/api/v2/` 。
