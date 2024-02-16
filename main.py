@@ -7,12 +7,14 @@ load_dotenv()
 app = Flask(__name__)
 
 ## auto require all controller
-controller_dir = os.path.join(os.path.dirname(__file__), 'controllers')
-for filename in os.listdir(controller_dir):
-    if filename.endswith('.py') and filename != '__init__.py':
-        module_name = filename[:-3]
-        module = importlib.import_module('controllers.' + module_name)
-        app.register_blueprint(module.defi)
+versions = ['v1', 'v2']
+for version in versions:
+    controller_dir = os.path.join(os.path.dirname(__file__), 'controllers', version)
+    for filename in os.listdir(controller_dir):
+        if filename.endswith('.py') and filename != '__init__.py':
+            module_name = filename[:-3]
+            module = importlib.import_module('controllers.' + version + '.' + module_name)
+            app.register_blueprint(module.defi, url_prefix='/api/' + version)
 
 if __name__ == '__main__':
     env = os.getenv('APP_ENV')
