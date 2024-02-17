@@ -2,6 +2,7 @@ from model.UserDAO import UserDAO
 from flask_jwt_extended import create_access_token, get_jwt_identity
 from datetime import timedelta
 from werkzeug.security import generate_password_hash, check_password_hash
+from system.EnvLoader import EnvLoader
 
 class UserService:
 
@@ -39,12 +40,13 @@ class UserService:
     def login(self, username, password):
         user = self.user_dao.find_by_username(username)
         if user and check_password_hash(user.password, password):
+            access_token_expires = float(EnvLoader.getenv("JWT_ACCESS_TOKEN_EXPIRES"))
             access_token = create_access_token(
                 identity={
                     "id": user.id,
                     "username": user.username
                 },
-                expires_delta=timedelta(minutes=1)
+                expires_delta=timedelta(seconds=access_token_expires)
             )
             return access_token
         return None

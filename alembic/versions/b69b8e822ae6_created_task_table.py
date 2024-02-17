@@ -5,11 +5,8 @@ Revises: 119b3501e97d
 Create Date: 2024-02-17 01:19:30.530234
 
 """
-import os
-from dotenv import load_dotenv
+from system.EnvLoader import EnvLoader
 from typing import Sequence, Union
-load_dotenv()
-
 from alembic import op
 import sqlalchemy as sa
 
@@ -34,7 +31,7 @@ def upgrade() -> None:
     sa.PrimaryKeyConstraint('id')
     )
 
-    if os.getenv('DB_DRIVER') != 'sqlite':
+    if EnvLoader.getenv('DB_DRIVER') != 'sqlite':
         op.create_foreign_key(
             "fk_user_id",
             "tasks",

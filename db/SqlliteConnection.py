@@ -1,8 +1,6 @@
-import os
-from dotenv import load_dotenv
 from sqlalchemy import create_engine, exc, text
 from sqlalchemy.engine import Engine
-load_dotenv()
+from system.EnvLoader import EnvLoader
 
 class SqlliteConnection:
     TASKS_DB = "TASKS"
@@ -11,7 +9,7 @@ class SqlliteConnection:
     @classmethod
     def get_engine(cls, db_name) -> Engine:
         if db_name not in cls.engines:
-            database_path = os.getenv(f'SQLITE_{db_name}_PATH')
+            database_path = EnvLoader.getenv(f'SQLITE_{db_name}_PATH')
             url = f"sqlite:///{database_path}"
             try:
                 print(f"Try to connect SQLite DB: {db_name}", end='...')
