@@ -2,11 +2,14 @@ import os
 import importlib
 from dotenv import load_dotenv
 from flask import Flask
+from flask_jwt_extended import JWTManager
 load_dotenv()
 
 app = Flask(__name__)
+app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY')
+jwt = JWTManager(app)
 
-## auto require all controller
+# auto require all controller
 versions = ['v1', 'v2']
 for version in versions:
     controller_dir = os.path.join(os.path.dirname(__file__), 'controllers', version)
