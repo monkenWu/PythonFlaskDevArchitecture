@@ -122,3 +122,83 @@ class TestUserCase(unittest.TestCase):
 ```
 
 上述程式碼中的 `initialize_database` 與 `clear_database` 是用來初始化與清理測試資料庫的方法，這個測試用資料庫將會依賴 `.testing.env` 與 `alembic.testing.ini` 檔案中的相關設定。
+
+## 錯誤處理與日誌
+
+專案使用 `flask` 內建的錯誤處理機制，並且透過 `logging` 模組進行日誌的記錄。
+
+### 錯誤處理
+
+錯誤處理的程式碼位於 `main.py` 中，並且透過 `@app.errorhandler` 裝飾器進行註冊。若在程式中出現無法處理的錯誤，那麼將會統一拋出 HTTP 500 錯誤。
+
+當 `.env` 中的 `APP_ENV` 設定為 `development` 時，錯誤處理將會回傳詳細的錯誤訊息，否則將會回傳一個簡單的錯誤訊息。
+
+舉個例子：
+
+* development 環境響應的錯誤資訊
+    ```json
+    {
+        "details": [
+            "Traceback (most recent call last):",
+            "  File \"/usr/local/lib/python3.9/site-packages/flask/app.py\", line 870, in full_dispatch_request",
+            "    rv = self.dispatch_request()",
+            "  File \"/usr/local/lib/python3.9/site-packages/flask/app.py\", line 855, in dispatch_request",
+            "    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]",
+            "  File \"/app/controllers/v1/UserController.py\", line 10, in register",
+            "    sdfds",
+            "NameError: name 'sdfds' is not defined"
+        ],
+        "message": "name 'sdfds' is not defined"
+    }
+    ```
+* production 環境響應的錯誤資訊
+    ```json
+    {
+        "message": "Internal Server Error"
+    }
+    ```
+
+### 日誌
+
+專案內的日誌統一由 `system.LogManager` 進行管理，他是一個 Singleton 類別，並且透過 `logging` 模組進行日誌的記錄。所有的 Log 將統一被寫入到 `writable/logs` 資料夾底下，相同的日誌最多留存 3 天。
+
+#### 系統預設錯誤日誌
+
+系統錯誤將會被記錄在 `writable/logs/app_error.log`。當無法預期的錯誤發生時，將會被記錄在這個日誌中。就像這樣：
+
+```log
+2024-02-18 01:00:38,773 - ERROR - name 'sdfds' is not defined
+Traceback (most recent call last):
+
+  File "/usr/local/lib/python3.9/site-packages/flask/app.py", line 870, in full_dispatch_request
+    rv = self.dispatch_request()
+
+  File "/usr/local/lib/python3.9/site-packages/flask/app.py", line 855, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+
+  File "/app/controllers/v1/UserController.py", line 10, in register
+    sdfds
+
+NameError: name 'sdfds' is not defined
+```
+
+#### 建立你自己的日誌
+
+你可以透過 `system.LogManager` 類別建立你自己的日誌，使用 `get_logger` 方法取得 Logger 實體。舉個例子：
+
+```python
+from flask import Blueprint, jsonify
+from system.LogManager import LogManager
+
+defi = Blueprint('v1_index_api', __name__)
+
+@defi.route('/', methods=['GET'])
+def index_page():
+    access_log = LogManager.get_logger('access_log', LogManager.LOG_INFO)
+    access_log.write('Access index page', LogManager.LOG_INFO)
+    return jsonify(status=200, msg={
+        "message": "Server is running. This is version 1 API."
+    })
+```
+
+上述程式碼中的 `access_log` 將會記錄在 `writable/logs/access_log.log` 中。
