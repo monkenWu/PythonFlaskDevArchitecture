@@ -81,11 +81,11 @@ API 將透過 `controllers` 底下的資料夾進行版本控制，每個資料�
     ```
     將會被註冊成 `/api/v2/` 。
 
-### 執行單元測試
+## 執行單元測試
 
 專案使用 `unittest` 作為單元測試框架，所有的單元測試都會置於 `tests` 資料夾底下。在執行單元測試前，請確保根目錄下的 `.testing.env` 與 `alembic.testing.ini` 檔案已經設定好。
 
-#### 執行測試
+### 執行測試
 
 * 執行單個測試
     ```bash
@@ -96,7 +96,7 @@ API 將透過 `controllers` 底下的資料夾進行版本控制，每個資料�
     python -m unittest discover -s ./tests/v1 -p 'Test*.py'
     ```
 
-#### 建立新的測試
+### 建立新的測試
 
 一個測試檔案應該繼承 `unittest.TestCase` 並且在 `setUp` 方法中初始化測試環境，並且在 `tearDown` 方法中清理測試環境。
 
