@@ -1,0 +1,199 @@
+{
+	"info": {
+		"_postman_id": "c6eec41d-73c7-4100-b7c1-62e1c88f3696",
+		"name": "Task Python APIs",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "29411031"
+	},
+	"item": [
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\" : \"test\",\n    \"password\" : \"test\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{server_endpoint}}/api/v1/user"
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\" : \"test\",\n    \"password\" : \"test\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{server_endpoint}}/api/v1/user/login"
+					},
+					"response": []
+				},
+				{
+					"name": "Info",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcwODIyNDY3MywianRpIjoiNDk2YjlhNjktZDQzMy00NTg4LWI1ZTQtZGJhN2M4M2E1Njk4IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6eyJpZCI6MSwidXNlcm5hbWUiOiJ0ZXN0In0sIm5iZiI6MTcwODIyNDY3MywiY3NyZiI6ImRkNzgzYmQ4LWNiMDctNGM3Zi05MjQ3LTFhOTU3ZDIwYzI2NiIsImV4cCI6MTcwODI0MjY3M30.nOAWlaYktJxLjb18bVXRSMxXv4xEB8-iYdP3bR8vrVE"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{server_endpoint}}/api/v1/user"
+					},
+					"response": []
+				}
+			],
+			"description": "建立使用者、登入、查閱使用者訊息。\n\n你必須透過 Login API 獲得 AccessToken 才能存取 Task 資源。"
+		},
+		{
+			"name": "Task",
+			"item": [
+				{
+					"name": "List",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcwODIyNDY3MywianRpIjoiNDk2YjlhNjktZDQzMy00NTg4LWI1ZTQtZGJhN2M4M2E1Njk4IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6eyJpZCI6MSwidXNlcm5hbWUiOiJ0ZXN0In0sIm5iZiI6MTcwODIyNDY3MywiY3NyZiI6ImRkNzgzYmQ4LWNiMDctNGM3Zi05MjQ3LTFhOTU3ZDIwYzI2NiIsImV4cCI6MTcwODI0MjY3M30.nOAWlaYktJxLjb18bVXRSMxXv4xEB8-iYdP3bR8vrVE"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{server_endpoint}}/api/v1/tasks"
+					},
+					"response": []
+				},
+				{
+					"name": "Info",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcwODIyNDY3MywianRpIjoiNDk2YjlhNjktZDQzMy00NTg4LWI1ZTQtZGJhN2M4M2E1Njk4IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6eyJpZCI6MSwidXNlcm5hbWUiOiJ0ZXN0In0sIm5iZiI6MTcwODIyNDY3MywiY3NyZiI6ImRkNzgzYmQ4LWNiMDctNGM3Zi05MjQ3LTFhOTU3ZDIwYzI2NiIsImV4cCI6MTcwODI0MjY3M30.nOAWlaYktJxLjb18bVXRSMxXv4xEB8-iYdP3bR8vrVE"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{server_endpoint}}/api/v1/task/1"
+					},
+					"response": []
+				},
+				{
+					"name": "Create",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcwODIyNDY3MywianRpIjoiNDk2YjlhNjktZDQzMy00NTg4LWI1ZTQtZGJhN2M4M2E1Njk4IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6eyJpZCI6MSwidXNlcm5hbWUiOiJ0ZXN0In0sIm5iZiI6MTcwODIyNDY3MywiY3NyZiI6ImRkNzgzYmQ4LWNiMDctNGM3Zi05MjQ3LTFhOTU3ZDIwYzI2NiIsImV4cCI6MTcwODI0MjY3M30.nOAWlaYktJxLjb18bVXRSMxXv4xEB8-iYdP3bR8vrVE"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\" : \"Task1\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{server_endpoint}}/api/v1/task"
+					},
+					"response": []
+				},
+				{
+					"name": "PUT",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcwODIyNDY3MywianRpIjoiNDk2YjlhNjktZDQzMy00NTg4LWI1ZTQtZGJhN2M4M2E1Njk4IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6eyJpZCI6MSwidXNlcm5hbWUiOiJ0ZXN0In0sIm5iZiI6MTcwODIyNDY3MywiY3NyZiI6ImRkNzgzYmQ4LWNiMDctNGM3Zi05MjQ3LTFhOTU3ZDIwYzI2NiIsImV4cCI6MTcwODI0MjY3M30.nOAWlaYktJxLjb18bVXRSMxXv4xEB8-iYdP3bR8vrVE"
+							}
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\" : \"Task1-1\",\n    \"status\" : 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{server_endpoint}}/api/v1/task/1"
+					},
+					"response": []
+				},
+				{
+					"name": "Patch",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcwODIyNDY3MywianRpIjoiNDk2YjlhNjktZDQzMy00NTg4LWI1ZTQtZGJhN2M4M2E1Njk4IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6eyJpZCI6MSwidXNlcm5hbWUiOiJ0ZXN0In0sIm5iZiI6MTcwODIyNDY3MywiY3NyZiI6ImRkNzgzYmQ4LWNiMDctNGM3Zi05MjQ3LTFhOTU3ZDIwYzI2NiIsImV4cCI6MTcwODI0MjY3M30.nOAWlaYktJxLjb18bVXRSMxXv4xEB8-iYdP3bR8vrVE"
+							}
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\" : \"Task1-1\"\n    // \"status\" : 1\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{server_endpoint}}/api/v1/task/1"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTcwODIyNDY3MywianRpIjoiNDk2YjlhNjktZDQzMy00NTg4LWI1ZTQtZGJhN2M4M2E1Njk4IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6eyJpZCI6MSwidXNlcm5hbWUiOiJ0ZXN0In0sIm5iZiI6MTcwODIyNDY3MywiY3NyZiI6ImRkNzgzYmQ4LWNiMDctNGM3Zi05MjQ3LTFhOTU3ZDIwYzI2NiIsImV4cCI6MTcwODI0MjY3M30.nOAWlaYktJxLjb18bVXRSMxXv4xEB8-iYdP3bR8vrVE"
+							}
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": "{{server_endpoint}}/api/v1/task/1"
+					},
+					"response": []
+				}
+			],
+			"description": "Task 的 CRUD API。\n\n你必須透過 Login API 獲得 AccessToken 才能存取 Task 資源。\n\nAccessToken 請至於 Header 的 Authorization 欄位，並使用 Bearar 格式傳輸。"
+		},
+		{
+			"name": "index",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "{{server_endpoint}}/api/v1"
+			},
+			"response": []
+		}
+	]
+}
