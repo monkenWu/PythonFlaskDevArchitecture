@@ -16,6 +16,16 @@ def list_tasks():
         'result': [task.to_dict() for task in tasks]
     }), 200
 
+@defi.route('/task/<int:task_id>', methods=['GET'])
+@jwt_required()
+def get_task(task_id):
+    user_id = UserService.get_current_user_id()
+    task = task_service.get_task(user_id, task_id)
+    if task:
+        return jsonify(task.to_dict()), 200
+    else:
+        return '', 404
+
 @defi.route('/task', methods=['POST'])
 @jwt_required()
 def create_task():

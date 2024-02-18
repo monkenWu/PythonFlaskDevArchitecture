@@ -15,6 +15,9 @@ class TaskService:
     def get_tasks(self, user_id):
         return self.task_dao.get_all_tasks_for_user(user_id)
 
+    def get_task(self, user_id, task_id):
+        return self.task_dao.find_by_id(user_id, task_id)
+
     def update_task(self, user_id, task_id, name, status):
         task = self.task_dao.find_by_id(user_id, task_id)
         if not task:
