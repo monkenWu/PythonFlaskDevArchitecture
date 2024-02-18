@@ -1,10 +1,41 @@
 # PythonTasks
 
+這是一個基於 Flask 的 API 伺服器開發架構示範。
+
+在這個示範中整合了一些常用的開發工具，並且提供了一個基本的開發環境。包含以下特性：
+
+* 使用 `docker-compose` 部署開發環境
+* 使用 `sqllib` 進行資料庫操作
+* 使用 `alembic` 進行資料庫 Migration
+* 使用 `SQLAlchemy` 作為 ORM，並且提供基本的 Model 設計
+* 使用 `unittest` 進行單元測試，提供基本的測試行為與獨立的測試環境組態設定
+* 使用 `flask` 進行 API 開發，並且進行 API 版本控制
+* 使用 `logging` 進行日誌記錄，提供統一的日誌管理介面
+* 使用 `flask` 內建的錯誤處理機制，並且提供統一的錯誤處理介面
+* 建立 Controller-Service-DAO 的開發架構
+
+## Feature
+
+在專案內已包含了一些 APIs 與相關的測試，你可以透過在啟動開發環境後進行基本的測試。你可以在專案根目錄中找到 `APIs.postman_collection.json` 檔案，這是一個 Postman Collection 檔案，你可以透過 Postman 進行 API 測試，這些 API 在設計上依循 RESTful API 的設計原則。
+
+在專案內提供以下的功能模組：
+* 使用者
+    * 註冊
+    * 登入 - 取得 Access Token
+    * 取得使用者資訊
+* 任務
+    * 新增任務
+    * 取得任務列表
+    * 取得任務資訊
+    * 更新任務 - 完整更新
+    * 更新任務 - 部分更新
+    * 刪除任務
+
 ## Environment
 
-### 初次部署
+本專案將透過 docker-compose.yml 部署開發環境
 
-#### 透過 docker-compose.yml 部署開發環境
+### 初次部署
 
 * 建構環境
     ```bash
@@ -31,6 +62,20 @@
     ```bash
     python main.py
     ```
+
+### 更新 pip 依賴
+
+當你在專案中新增了新的依賴，你需要更新 `requirements.txt` 檔案。
+
+```bash
+pip freeze > requirements.txt
+```
+
+再次建構環境
+
+```bash
+docker-compose build
+```
 
 ## Database Migration
 
@@ -146,7 +191,7 @@ class TestUserCase(unittest.TestCase):
 
 上述程式碼中的 `initialize_database` 與 `clear_database` 是用來初始化與清理測試資料庫的方法，這個測試用資料庫將會依賴 `.testing.env` 與 `alembic.testing.ini` 檔案中的相關設定。
 
-## 錯誤處理與日誌
+## 錯誤處理
 
 專案使用 `flask` 內建的錯誤處理機制，並且透過 `logging` 模組進行日誌的記錄。
 
@@ -204,11 +249,11 @@ def create_task(self, user_id, name):
 }
 ```
 
-### 日誌
+## 日誌
 
 專案內的日誌統一由 `system.LogManager` 進行管理，他是一個 Singleton 類別，並且透過 `logging` 模組進行日誌的記錄。所有的 Log 將統一被寫入到 `writable/logs` 資料夾底下，相同的日誌最多留存 3 天。
 
-#### 系統預設錯誤日誌
+### 系統預設錯誤日誌
 
 系統錯誤將會被記錄在 `writable/logs/app_error.log`。當無法預期的錯誤發生時，將會被記錄在這個日誌中。就像這樣：
 
@@ -228,7 +273,7 @@ Traceback (most recent call last):
 NameError: name 'sdfds' is not defined
 ```
 
-#### 建立你自己的日誌
+### 建立你自己的日誌
 
 你可以透過 `system.LogManager` 類別建立你自己的日誌，使用 `get_logger` 方法取得 Logger 實體。舉個例子：
 
