@@ -6,6 +6,8 @@ from flask import jsonify
 from flask_jwt_extended import JWTManager
 from system.EnvLoader import EnvLoader
 from system.LogManager import LogManager
+import system.Exceptions as Exceptions
+from werkzeug.exceptions import HTTPException
 
 app = Flask(__name__)
 app.config['JWT_SECRET_KEY'] =  EnvLoader.getenv('JWT_SECRET_KEY')
@@ -28,6 +30,10 @@ for version in versions:
 app_error_log = LogManager.get_logger(LogManager.APP_ERROR_LOG, LogManager.LOG_ERROR)
 @app.errorhandler(Exception)
 def handle_error(e):
+    # 如果是 HTTPException
+    if isinstance(e, HTTPException):
+        return jsonify({'message': e.description}), e.code
+    # 只處理未知錯誤
     env = EnvLoader.getenv('APP_ENV')
     if env == 'development' or env == 'testing':
         detail_list = ''.join(traceback.format_exception(None, e, e.__traceback__)).splitlines()
@@ -46,6 +52,14 @@ def handle_error(e):
         LogManager.LOG_ERROR
     )
     return jsonify(response), 500
+
+# 註冊全域錯誤處理
+@app.errorhandler(Exceptions.ValidationError)
+def handle_validation_error(e):
+    return jsonify({'message': str(e)}), 400
+@app.errorhandler(Exceptions.UnauthorizedError)
+def handle_unauthorized_error(e):
+    return jsonify({'message': str(e)}), 401
 
 if __name__ == '__main__':
     env = EnvLoader.getenv('APP_ENV')

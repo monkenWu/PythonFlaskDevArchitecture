@@ -67,19 +67,42 @@ API 將透過 `controllers` 底下的資料夾進行版本控制，每個資料�
     ```
 * 在新的 `v{version}` 資料夾中開始新增新的 Controller
 
+### 新增 Controller
+
+在 `v{version}` 資料夾中新增一個新的 Controller，例如 `IndexController.py`
+
+```python
+from flask import Blueprint, jsonify
+from system.LogManager import LogManager
+
+defi = Blueprint('v1_index_api', __name__)
+
+@defi.route('/', methods=['GET'])
+def index_page():
+    access_log = LogManager.get_logger('access_log', LogManager.LOG_INFO)
+    access_log.write('Access index page', LogManager.LOG_INFO)
+    return jsonify(status=200, msg={
+        "message": "Server is running. This is version 1 API."
+    })
+```
+
+defi 是一個 Flask Blueprint 實體，他將會被註冊成一個 API 路由。你一定得透過 defi 作為 Blueprint('v1_index_api', __name__) 的 Blueprint 名稱，這樣才能被 `main.py` 正確地自動註冊。
+
 ### 路由規則
 
 所有 Controller `v{version}` 底下的路由都會以 `/api/{version}` 開頭。舉個例子：
-* 置於 `{project_root}/controllers/v2/IndexController.py` 的以下路由
 
-    ```python
-    @defi.route('/', methods=['GET'])
-    def index_page():
-        return jsonify(status=200, msg={
-            "message": "Server is running, This is version 2 API."
-    })
-    ```
-    將會被註冊成 `/api/v2/` 。
+置於 `{project_root}/controllers/v2/IndexController.py` 的以下路由
+
+```python
+@defi.route('/', methods=['GET'])
+def index_page():
+    return jsonify(status=200, msg={
+        "message": "Server is running, This is version 2 API."
+})
+```
+
+將會被註冊成 `/api/v2/` 。
 
 ## 執行單元測試
 
@@ -157,6 +180,29 @@ class TestUserCase(unittest.TestCase):
         "message": "Internal Server Error"
     }
     ```
+
+### 拋出錯誤
+
+你可以透過 `system.Exceptions` 底下的類別在你的 Controller 或是 Service 中拋出錯誤。框架會自動地將這些錯誤訊息轉換成 HTTP 響應。
+
+舉了一個例子：
+
+```python
+from system.Exceptions import ValidationError
+
+def create_task(self, user_id, name):
+    task = self.task_dao.find_by_name(user_id, name)
+    if task:
+        raise ValidationError(f'Task {name} already exists')
+```
+
+此時，當 `create_task` 方法被呼叫時，若 `task` 已經存在，則會拋出一個 HTTP 400 錯誤，並且響應以下的訊息：
+
+```json
+{
+    "message": "Task {name} already exists"
+}
+```
 
 ### 日誌
 
